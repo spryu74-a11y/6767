@@ -19,7 +19,16 @@
 }
 
 html,
-body,
+body {
+  width: 100%;
+  height: 100%;
+  height: 100dvh;
+  margin: 0;
+  overflow: hidden;
+  background: #000;
+  overscroll-behavior: none;
+}
+
 #app {
   width: 100%;
   height: 100%;
@@ -29,6 +38,24 @@ body,
   background: #000;
   overscroll-behavior: none;
   touch-action: manipulation;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 16:9 letterbox 게임 뷰포트 ─────────────────────────────
+   모든 게임 요소를 16:9 비율로 제한. 나머지 공간은 검정 레터박스.
+   transform: translateZ(0) 을 사용해 position:fixed 자식 요소들이
+   뷰포트가 아닌 이 컨테이너를 기준으로 배치되도록 함.
+─────────────────────────────────────────────────────────── */
+#gameViewport {
+  position: relative;
+  width: min(100vw, calc(100dvh * 16 / 9));
+  height: min(100dvh, calc(100vw * 9 / 16));
+  overflow: hidden;
+  background: #000;
+  transform: translateZ(0);
+  flex-shrink: 0;
 }
 
 button {
@@ -233,12 +260,8 @@ canvas {
 }
 
 .office {
-  position: relative;
-  width: 100vw;
-  height: 100vh;
-  height: 100dvh;
-  min-width: 320px;
-  min-height: 540px;
+  position: absolute;
+  inset: 0;
   overflow: hidden;
   background: #111;
 }
@@ -249,12 +272,8 @@ canvas {
 
 .office-scene {
   position: absolute;
-  left: 50%;
-  top: 50%;
+  inset: 0;
   z-index: 0;
-  width: max(100vw, calc(100vh * 16 / 9));
-  height: max(100vh, calc(100vw * 9 / 16));
-  transform: translate(-50%, -50%);
   overflow: hidden;
 }
 
@@ -471,7 +490,7 @@ canvas {
   left: 50%;
   bottom: 20px;
   z-index: 60;
-  width: min(620px, calc(100vw - 40px));
+  width: min(620px, calc(100% - 40px));
   aspect-ratio: 598 / 45;
   height: auto;
   transform: translateX(-50%);
@@ -507,8 +526,8 @@ canvas {
 
 #cameraCanvas {
   display: block;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   image-rendering: auto;
 }
 
@@ -517,8 +536,8 @@ canvas {
   inset: 0;
   z-index: 20;
   display: none;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   pointer-events: none;
   user-select: none;
@@ -672,7 +691,7 @@ canvas {
   bottom: 42px;
   z-index: 21;
   display: none;
-  width: min(260px, 24vw, calc(100vw - 48px));
+  width: clamp(160px, 22%, 260px);
   aspect-ratio: 502 / 528;
   overflow: hidden;
   pointer-events: none;
@@ -1277,4 +1296,50 @@ canvas {
   .hint {
     width: calc(100vw - 24px);
   }
+}
+
+/* ── 세로 모드 경고 (터치 기기에서만 표시) ─────────────────── */
+.portrait-warning {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #000;
+  color: #fff;
+  font-family: "Courier New", monospace;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 20px;
+  padding: 32px;
+  pointer-events: none;
+}
+
+@media (orientation: portrait) and (pointer: coarse) {
+  .portrait-warning {
+    display: flex;
+  }
+}
+
+.portrait-warning-icon {
+  font-size: 72px;
+  line-height: 1;
+  animation: rotateHint 1.8s ease-in-out infinite alternate;
+}
+
+.portrait-warning-text {
+  font-size: clamp(18px, 6vw, 28px);
+  font-weight: 800;
+  text-shadow: 2px 2px 0 #000;
+}
+
+.portrait-warning-sub {
+  font-size: clamp(12px, 3.5vw, 16px);
+  color: #888;
+}
+
+@keyframes rotateHint {
+  from { transform: rotate(-20deg); }
+  to   { transform: rotate(20deg); }
 }

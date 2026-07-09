@@ -1,3 +1,4 @@
+const gameViewport = document.getElementById("gameViewport");
 const cameraLayer = document.getElementById("cameraLayer");
 const cameraCanvas = document.getElementById("cameraCanvas");
 const cameraHud = document.getElementById("cameraHud");
@@ -1291,18 +1292,23 @@ function animateFrames(from, to, frameMs, done) {
 }
 
 function resizeCanvas() {
-  const ratio = window.devicePixelRatio || 1;
-  cameraCanvas.width = Math.max(1, Math.floor(window.innerWidth * ratio));
-  cameraCanvas.height = Math.max(1, Math.floor(window.innerHeight * ratio));
+  // DPR을 최대 2로 제한 → Retina iPad/iPhone에서 과도한 캔버스 크기 방지
+  const ratio = Math.min(window.devicePixelRatio || 1, 2);
+  const w = gameViewport.clientWidth  || window.innerWidth;
+  const h = gameViewport.clientHeight || window.innerHeight;
+  cameraCanvas.width  = Math.max(1, Math.round(w * ratio));
+  cameraCanvas.height = Math.max(1, Math.round(h * ratio));
   context.setTransform(ratio, 0, 0, ratio, 0, 0);
 }
 
 function drawFrame(index) {
   const source = getFrameSource(index);
-  const target = getCoverRect(window.innerWidth, window.innerHeight, frame.width, frame.height);
+  const w = gameViewport.clientWidth  || window.innerWidth;
+  const h = gameViewport.clientHeight || window.innerHeight;
+  const target = getCoverRect(w, h, frame.width, frame.height);
 
   context.fillStyle = "#000";
-  context.fillRect(0, 0, window.innerWidth, window.innerHeight);
+  context.fillRect(0, 0, w, h);
   context.drawImage(
     cameraSprite,
     source.x,
