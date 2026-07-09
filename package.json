@@ -1,0 +1,56 @@
+{
+  "name": "freddy-1",
+  "version": "0.1.0",
+  "description": "FREDDY 1 Windows desktop prototype.",
+  "main": "electron/main.js",
+  "private": true,
+  "author": "FREDDY 1",
+  "license": "UNLICENSED",
+  "scripts": {
+    "dev": "electron .",
+    "start": "electron .",
+    "build": "node scripts/build-check.js",
+    "html": "node scripts/build-html-version.js",
+    "dist": "npm run build && electron-builder --win",
+    "dist:win": "npm run build && electron-builder --win nsis",
+    "dist:portable": "npm run build && electron-builder --win portable"
+  },
+  "devDependencies": {
+    "electron": "^31.7.7",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.freddy1.game",
+    "productName": "FREDDY 1",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "electron/**/*",
+      "src/**/*",
+      "assets/office/**/*",
+      "assets/sprites/**/*",
+      "assets/audio/**/*",
+      "package.json"
+    ],
+    "extraMetadata": {
+      "main": "electron/main.js"
+    },
+    "artifactName": "${productName}-${version}-${os}-${arch}.${ext}",
+    "win": {
+      "signAndEditExecutable": false,
+      "target": [
+        "nsis",
+        "portable"
+      ]
+    },
+    "portable": {
+      "artifactName": "${productName}-portable.${ext}"
+    },
+    "nsis": {
+      "artifactName": "${productName} Setup.${ext}",
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
+  }
+}

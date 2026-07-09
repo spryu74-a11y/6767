@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <title>FREDDY 1</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <main id="app">
+  <section id="mainMenu" class="main-menu active" aria-label="Main menu" aria-hidden="false">
+    <div class="main-menu-panel">
+      <h1 class="main-menu-logo">FREDDY 1</h1>
+      <div id="menuNightLabel" class="main-menu-night">NIGHT 1</div>
+      <div class="main-menu-actions">
+        <button id="startGameButton" class="main-menu-button" type="button" aria-label="Start game">
+          <img class="main-menu-action-image" src="../assets/sprites/menu-start.png" alt="">
+          <span>START</span>
+        </button>
+        <button id="quitGameButton" class="main-menu-button secondary" type="button" aria-label="Quit game">
+          <img class="main-menu-action-image" src="../assets/sprites/menu-quit.png" alt="">
+          <span>QUIT</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section id="nightIntro" class="night-intro" aria-hidden="true">
+    <div id="nightIntroBlip" class="night-intro-blip">
+      <img src="../assets/sprites/cctv-blip-flash.png" alt="">
+    </div>
+    <div id="nightIntroText" class="night-intro-text">NIGHT 1</div>
+  </section>
+
+    <section class="office" aria-label="Security office">
+      <div class="office-scene" aria-hidden="false">
+        <img class="office-layout-image" src="../assets/office/office-layout.png" alt="">
+
+        <img id="leftDoorOverlay" class="door-overlay left-door-overlay" src="../assets/office/left-door-wall.png" alt="">
+        <img id="rightDoorOverlay" class="door-overlay right-door-overlay" src="../assets/office/right-door-wall.png" alt="">
+        <img id="leftDoorVisitor" class="door-visitor left-door-visitor" src="../assets/sprites/tongtong-kim-left.png" alt="">
+        <img id="rightDoorVisitor" class="door-visitor right-door-visitor" src="../assets/sprites/tongtong-kim-right.png" alt="">
+
+        <div class="control-panel left-control-panel">
+          <img id="leftPanelImage" src="../assets/office/left-panel-default.png" alt="">
+          <button class="panel-hotspot door-hotspot" type="button" data-side="left" data-action="door" aria-label="Left door" aria-pressed="false"></button>
+          <button class="panel-hotspot light-hotspot" type="button" data-side="left" data-action="light" aria-label="Left light" aria-pressed="false"></button>
+        </div>
+
+        <div class="control-panel right-control-panel">
+          <img id="rightPanelImage" src="../assets/office/right-panel-default.png" alt="">
+          <button class="panel-hotspot door-hotspot" type="button" data-side="right" data-action="door" aria-label="Right door" aria-pressed="false"></button>
+          <button class="panel-hotspot light-hotspot" type="button" data-side="right" data-action="light" aria-label="Right light" aria-pressed="false"></button>
+        </div>
+
+        <div id="leftLightBeam" class="light-beam left-light-beam"></div>
+        <div id="rightLightBeam" class="light-beam right-light-beam"></div>
+      </div>
+      <div class="office-noise" aria-hidden="true"></div>
+      <div class="office-vignette" aria-hidden="true"></div>
+
+      <header class="status-bar">
+        <div>
+          <span class="label">Prototype</span>
+          <strong>FREDDY 1</strong>
+        </div>
+        <div>
+          <span class="label">CCTV</span>
+          <strong id="cameraState">OFFLINE</strong>
+        </div>
+      </header>
+
+      <button id="cctvButton" class="cctv-button" type="button" aria-pressed="false" aria-label="Toggle CCTV camera">
+        <span class="sr-only">Toggle CCTV</span>
+      </button>
+
+    </section>
+
+    <section id="cameraLayer" class="camera-layer" aria-label="CCTV monitor">
+      <canvas id="cameraCanvas"></canvas>
+      <img class="camera-feed-image camera-feed-image-cam1" src="../assets/sprites/cctv-cam-1-feed.png" alt="" aria-hidden="true">
+      <img class="camera-feed-image camera-feed-image-cam2" src="../assets/sprites/cctv-cam-2-feed.png" alt="" aria-hidden="true">
+      <img class="camera-feed-image camera-feed-image-cam3" src="../assets/sprites/cctv-cam-3-feed.png" alt="" aria-hidden="true">
+      <img id="cam4FeedImage" class="camera-feed-image camera-feed-image-cam4" src="../assets/sprites/cctv-cam-4-feed-0.png" alt="" aria-hidden="true">
+      <img id="musicBoxRoomImage" class="camera-feed-image camera-feed-image-musicbox-room" src="../assets/sprites/music-box-room.png" alt="" aria-hidden="true">
+      <img id="musicBoxKimImage" class="music-box-roamer" src="../assets/sprites/music-box-kim.png" alt="" aria-hidden="true">
+      <img class="camera-actor camera-actor-left" src="../assets/sprites/tongtong-kim-left.png" alt="" aria-hidden="true">
+      <img class="camera-actor camera-actor-right" src="../assets/sprites/tongtong-kim-right.png" alt="" aria-hidden="true">
+      <div id="cctvMapPanel" class="cctv-map-panel" aria-hidden="true">
+        <img class="cctv-map-layout" src="../assets/sprites/cctv-map-layout.png" alt="">
+        <button class="cctv-camera-button cctv-camera-button-cam4" type="button" data-camera-id="4" aria-label="CAM 4" aria-pressed="false">
+          <img src="../assets/sprites/cctv-cam-4.png" alt="">
+        </button>
+        <button class="cctv-camera-button cctv-camera-button-cam3" type="button" data-camera-id="3" aria-label="CAM 3" aria-pressed="true">
+          <img src="../assets/sprites/cctv-cam-3.png" alt="">
+        </button>
+        <button class="cctv-camera-button cctv-camera-button-cam1" type="button" data-camera-id="1" aria-label="CAM 1" aria-pressed="false">
+          <img src="../assets/sprites/cctv-cam-1.png" alt="">
+        </button>
+        <button class="cctv-camera-button cctv-camera-button-cam2" type="button" data-camera-id="2" aria-label="CAM 2" aria-pressed="false">
+          <img src="../assets/sprites/cctv-cam-2.png" alt="">
+        </button>
+      </div>
+      <div class="feed-control">
+        <button id="feedButton" class="feed-button" type="button">WIND MUSIC BOX</button>
+        <div id="musicBoxMeter" class="music-box-meter" role="progressbar" aria-label="Music box" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100">
+          <div id="musicBoxFill" class="music-box-fill"></div>
+        </div>
+        <span id="feedCooldownLabel" class="feed-cooldown-label">READY</span>
+      </div>
+      <div id="cameraHud" class="camera-hud" aria-hidden="true">
+        <div class="recording-dot"></div>
+        <strong>CAMERA ONLINE</strong>
+      </div>
+      <div id="cameraStatic" class="camera-static" aria-hidden="true">
+        <img class="camera-static-sheet" src="../assets/sprites/cctv-static.png" alt="">
+      </div>
+      <div id="cameraBlipFlash" class="camera-blip-flash" aria-hidden="true">
+        <img class="camera-blip-flash-sheet" src="../assets/sprites/cctv-blip-flash.png" alt="">
+      </div>
+    </section>
+
+    <div class="power-hud" aria-label="Power status">
+      <div class="power-line">Power left: <strong id="powerValue">100%</strong></div>
+      <div class="usage-line">
+        <span>Usage:</span>
+        <div class="usage-bars" aria-hidden="true">
+          <span data-usage-bar></span>
+          <span data-usage-bar></span>
+          <span data-usage-bar></span>
+          <span data-usage-bar></span>
+          <span data-usage-bar></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="time-hud" aria-label="Game time">
+      <div class="time-night">Night 1</div>
+      <div class="time-display"><strong id="timeValue">12 AM</strong></div>
+    </div>
+
+    <div id="jumpscareOverlay" class="jumpscare-overlay" aria-hidden="true">
+      <img id="jumpscareSprite" class="jumpscare-sprite" src="" alt="">
+    </div>
+
+    <div id="deathStaticScreen" class="death-static-screen" aria-hidden="true">
+      <div class="death-static-frame" aria-hidden="true"></div>
+    </div>
+
+    <div id="gameOverScreen" class="game-over-screen" aria-hidden="true">
+      <div class="game-over-text">YOU WERE GOTTEN</div>
+      <div class="game-over-sub">Press F5 to try again</div>
+    </div>
+
+  <div id="victoryScreen" class="victory-screen" aria-hidden="true">
+    <div class="victory-roll">
+      <div class="victory-hour">5 AM</div>
+      <div class="victory-hour">6 AM</div>
+    </div>
+  </div>
+
+  </main>
+
+  <script type="module" src="./main.js"></script>
+</body>
+</html>
